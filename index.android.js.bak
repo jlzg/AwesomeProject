@@ -1,0 +1,292 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ * @flow
+ */
+
+/***
+ * TODO: how to another service (js), to call the web service of publishing messages
+ * TODO: how to another service (js), to call the web service of subscribing messages
+ */
+import React, { Component } from 'react';
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+    ListView,
+  TextInput,
+  image,
+  Button,
+    ActivityIndicator,
+MapView,
+Picker,
+WebView
+} from 'react-native';
+//import {Button}    from 'react-native-button';
+var HEADER = '#3b5998';
+var BGWASH = 'rgba(255,255,255,0.8)';
+var DISABLED_WASH = 'rgba(255,255,255,0.25)';
+
+var TEXT_INPUT_REF = 'urlInput';
+var WEBVIEW_REF = 'webview';
+var DEFAULT_URL = 'https://m.facebook.com';
+
+var styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: HEADER,
+    },
+    addressBarRow: {
+        flexDirection: 'row',
+        padding: 8,
+    },
+    webView: {
+        backgroundColor: BGWASH,
+        height: 350,
+    },
+    addressBarTextInput: {
+        backgroundColor: BGWASH,
+        borderColor: 'transparent',
+        borderRadius: 3,
+        borderWidth: 1,
+        height: 24,
+        paddingLeft: 10,
+        paddingTop: 3,
+        paddingBottom: 3,
+        flex: 1,
+        fontSize: 14,
+    },
+    navButton: {
+        width: 20,
+        padding: 3,
+        marginRight: 3,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: BGWASH,
+        borderColor: 'transparent',
+        borderRadius: 3,
+    },
+    disabledButton: {
+        width: 20,
+        padding: 3,
+        marginRight: 3,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: DISABLED_WASH,
+        borderColor: 'transparent',
+        borderRadius: 3,
+    },
+    goButton: {
+        height: 24,
+        padding: 3,
+        marginLeft: 8,
+        alignItems: 'center',
+        backgroundColor: BGWASH,
+        borderColor: 'transparent',
+        borderRadius: 3,
+        alignSelf: 'stretch',
+    },
+    statusBar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 5,
+        height: 22,
+    },
+    statusBarText: {
+        color: 'white',
+        fontSize: 13,
+    },
+    spinner: {
+        width: 20,
+        marginRight: 6,
+    },
+    buttons: {
+        flexDirection: 'row',
+        height: 30,
+        backgroundColor: 'black',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    button: {
+        flex: 0.5,
+        width: 0,
+        margin: 5,
+        borderColor: 'gray',
+        borderWidth: 1,
+        backgroundColor: 'gray',
+    },
+});
+
+class AwesomeProject extends Component {
+  render() {
+    return (
+      <View>
+        <Text style={styles.welcome}>
+          Welcome to React Native, this is first sample!
+        </Text>
+        <Text style={styles.instructions}>
+          To get started, edit index.android.js
+        </Text>
+        <Text style={styles.instructions}>
+          Double tap R on your keyboard to reload,{'\n'}
+          Shake or press menu button for dev menu
+        </Text>
+        <Text>
+          This is another line here, to be replaced with buttons.
+        </Text>
+      </View>
+    );
+  }
+}
+
+class Duplicates extends Component{
+
+  constructor(){
+    super();
+    this.state ={
+      text: 'Default value here'
+    };
+  }
+
+
+  render() {
+    return (
+        <View>
+          <AwesomeProject />
+          <AwesomeProject />
+          <TextInput style={{height: 40}}
+                     placeholder="Type here to translate"
+                     onChangeText={input => this.setState({text: input})} />
+          <Text>{this.state.text.split(' ').map(
+              word => word + '__'
+          ).join(' ')}</Text>
+          <AwesomeProject />
+
+        </View>
+    );
+  }
+}
+
+class WebViewComponent extends Component{
+
+    constructor(){
+        super();
+        this.state ={
+            text: 'Default value here'
+        };
+    }
+
+
+    render() {
+        return (
+            <WebView
+                source={{uri: 'http://www.google.com'}}
+                style={styles.webView}
+            />
+        );
+    }
+}
+
+
+class DupDuplicates extends Component {
+  constructor(){
+    super();
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state = {
+      response: [],
+        dataSource: this.ds.cloneWithRows([]),
+      isLoading: true,
+      language: ["Java", "js"]
+    };
+  }
+  componentDidMount() {
+    console.log("dummy log here"); // Prints 'bar'
+  }
+  renderRow(rowData){
+      return (
+          <View>
+              <Text> {rowData} </Text>
+          </View>
+    );
+  }
+  render(){
+      debugger;
+    return(
+      <ScrollView>
+        <Button onPress={() => this._getMoviesFromApiAsync()} title="Load Movies updated" />
+          {/*
+        <WebView
+            source={{uri: 'http://www.google.com'}}
+            style={styles.webView}
+            />
+*/}
+
+        <Picker
+            selectedValue={this.state.language}
+            onValueChange={(lang) => this.setState({language: lang})}>
+          <Picker.Item label="Java" value="java" />
+          <Picker.Item label="JavaScript" value="js" />
+        </Picker>
+
+          <ListView
+              dataSource={this.state.dataSource}
+              renderRow={row => <Text>{row.title}: {row.releaseYear}</Text>}
+          />
+          <Text>check response: {this.state.dataSource.length}</Text>
+
+        <Text>check response: {this.state.response.length}</Text>
+        <Text>check response: {this.state.response.map(movie =>  <Text>{movie.title}</Text>)}</Text>
+        <ActivityIndicator
+            animating={this.state.isLoading}
+            style={[styles.centering, {height: 80}]}
+            size={50}
+        />
+        <Duplicates/>
+        <Duplicates/>
+      </ScrollView>
+
+    );
+  }
+
+  _getMoviesFromApiAsync() {
+    //alert("testing here");
+  return fetch('https://facebook.github.io/react-native/movies.json')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log("check response: "+ responseJson.movies);
+        this.setState({response: responseJson.movies});
+        this.setState({isLoading: false});
+        this.setState({dataSource: this.state.dataSource.cloneWithRows(responseJson.movies)});
+        return responseJson.movies;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+}
+}
+
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+});
+
+AppRegistry.registerComponent('AwesomeProject', () => DupDuplicates);
+//AppRegistry.registerComponent('AwesomeProject', () => WebViewComponent);
