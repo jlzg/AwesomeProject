@@ -27,15 +27,16 @@ import {
     TouchableHighlight,
     ToolbarAndroid
 } from 'react-native';
-import _ from 'lodash';
-import LocalToastAndroid from './LocalToastAndroid';
+
 import TapScene from './TapScene';
-import SettingsScene from './Settings'
+import SettingsScene from './Settings';
+
+
 
 class Room extends Component{
 
     navigatorRenderScene(route, navigator) {
-        _navigator = navigator;
+        //_navigator = navigator;
         switch (route.id) {
             case 'default':
                 return (<TapScene title={route.title} navigator={navigator} />);
@@ -47,8 +48,8 @@ class Room extends Component{
 
     render(){
         const routes = [
-            {title: 'Tap Scene', index: 0, id: 'default'},
-            {title: 'Settings Scene', index: 1, id: 'settings'},
+            {title: 'Tap Scene', id: 'default'},
+            {title: 'Settings Scene', id: 'settings'},
         ];
 
         return (

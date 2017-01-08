@@ -298,7 +298,8 @@ export default class TapScene extends Component{
     };
     navSecond(){
         this.props.navigator.push({
-            id: 'settings'
+            id: 'settings',
+            title: 'Settings Scene'
         })
     }
 
