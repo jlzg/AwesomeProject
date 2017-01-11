@@ -1,6 +1,9 @@
 /**
  * Created by lwpro on 1/8/2017.
  */
+/**
+ * Created by lwpro on 1/8/2017.
+ */
 import React, {Component} from 'react';
 import TimerMixin from 'react-timer-mixin';
 import {
@@ -23,13 +26,11 @@ import {
     Navigator,
     TouchableHighlight,
     ToolbarAndroid,
-    AsyncStorage,
-    Image
-
+    AsyncStorage
 } from 'react-native';
 import _ from 'lodash';
 import LocalToastAndroid from './LocalToastAndroid';
-
+import Drawer from 'react-native-drawer';
 
 
 
@@ -71,7 +72,6 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 0.5
 
     },
     inputBarBottom: {
@@ -173,7 +173,6 @@ var styles = StyleSheet.create({
     toolbar: {
         backgroundColor: '#e9eaed',
         height: 56,
-        flex: 0.5
     },
     // button: {
     //     flex: 0.5,
@@ -204,7 +203,6 @@ export default class TapScene extends Component{
             language: ["Java", "js"],
             favoriteNumber: '6512345678',
             favnumber: ``,
-            msg:`Leave a msg`,
             text: ``//on type, change the state of text here,
 
         };
@@ -216,6 +214,31 @@ export default class TapScene extends Component{
             this.setState({"favnumber": value});
         }).done();
 
+        TimerMixin.setTimeout(
+            () => {
+                this.loadWebService();
+            },
+            500
+        );
+        //after mount, keep polling to update the json response
+        this.timer = TimerMixin.setInterval(() => {
+            this.loadWebService();
+            //debugger;
+            // console.log(`current timer: ${new Date()}`);
+            // return fetch('https://facebook.github.io/react-native/movies.json')
+            //     .then((response) => response.json())
+            //     .then((responseJson) => {
+            //         console.log("check response: " + responseJson.movies.length);
+            //         this.setState({response: responseJson.movies});
+            //         this.setState({isLoading: false});
+            //         this.setState({dataSource: this.state.dataSource.cloneWithRows(responseJson.movies)});
+            //         return responseJson.movies;
+            //         //this is background thread, keep polling for new request
+            //     })
+            //     .catch((error) => {
+            //         console.error(error);
+            //     });
+        }, 60000);
     }
 
     loadWebService(){
@@ -250,9 +273,9 @@ export default class TapScene extends Component{
         LocalToastAndroid.call(this.state.favnumber);
     };
 
-    sendMSG(url) {
+    handleOpenurl(url) {
         //url = "http://www.google.com";
-        url = "sms:+"+this.state.favnumber+"?body="+this.state.msg+"";
+        url = "sms:+6512345678?body=test message";
         Linking.canOpenURL(url).then(supported => {
             if (supported) {
                 Linking.openURL(url);
@@ -304,27 +327,26 @@ export default class TapScene extends Component{
 
         return (
             <View style={{flexDirection: 'column', flex: 1}}>
-                {/***
-                    <StatusBar
-                        backgroundColor="black"
-                        barStyle="light-content"
-                    />
-                 **/}
+                <StatusBar
+                    backgroundColor="black"
+                    barStyle="light-content"
+                />
 
                 <ToolbarAndroid
                     style={styles.toolbar}
-                    actions={[{title: 'Settings', icon: require('./settings.png'), show: 'always'}]}
+                    title="Settings"
+                    actions={[{title: 'Settings', icon: require('./go-back.png'), show: 'always'}]}
                     onActionSelected={this.navSecond.bind(this)}
                     onIconClicked={this.navSecond.bind(this)}
                     titleColor={'#000000'}
                 />
                 {/***
-                <ToolbarAndroid style={styles.toolbar}
-                                title={this.props.title}
-                                titleColor={'#FFFFFF'}/>
-                <TouchableHighlight onPress={this.navSecond.bind(this)}>
-                    <Text>Settings</Text>
-                </TouchableHighlight>
+                 <ToolbarAndroid style={styles.toolbar}
+                 title={this.props.title}
+                 titleColor={'#FFFFFF'}/>
+                 <TouchableHighlight onPress={this.navSecond.bind(this)}>
+                 <Text>Settings</Text>
+                 </TouchableHighlight>
                  */}
                 {/***
                  <Navigator
@@ -353,37 +375,65 @@ export default class TapScene extends Component{
                  style={{padding: 100}}
                  />
                  */}
-                <View style={{alignSelf: "stretch", flex: 9, alignItems: 'stretch'}}>
+
                 <TouchableOpacity
-                    style={{flex:1}}
                     onPress={this.handleClick.bind(this)}>
-                    {/***
-                    <View style={{alignSelf: "stretch", flex: 1}}>
-                        <Text>Tap2call</Text>
+                    <View style={styles.button}>
+                        <Text style={styles.text}>Tap2call</Text>
                     </View>
-                     ***/}
-                    <Image
-                        style={{flex:1}}
-                    />
-                    <Text style={styles.welcome}>
-                        {`${_.capitalize(`just tap the screen to call favorite.`)}`}
-                    </Text>
                 </TouchableOpacity>
-                </View>
+
+                <TouchableOpacity
+                    onPress={this.handleToast.bind(this)}>
+                    <View style={styles.button}>
+                        <Text style={styles.text}>Show Toast</Text>
+                    </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    onPress={this.handleOpenurl.bind(this)}>
+                    <View style={styles.button}>
+                        <Text style={styles.text}>Leave a message</Text>
+                    </View>
+                </TouchableOpacity>
+                {/***
+                 <Drawer
+                 ref={(ref) => this._drawer = ref}
+                 content={<ControlPanel />}
+                 >
+                 <MainView />
+                 </Drawer>
+                 */}
+
+                <ScrollView>
+                    {/***
+                     <ListView
+                     dataSource={this.state.dataSource}
+                     renderRow={row =>
+                            <Text>{row.title}: {row.releaseYear}</Text>}
+                     enableEmptySections={true}
+                     />
+                     */}
+                    <Text style={styles.welcome}>
+                        {_.capitalize(`Just tap the screen to launch the favorite call!`)}
+                        {`${_.capitalize(`just tap the screen`)} ${_.capitalize(`to launch the favorite call!`)}`}
+                    </Text>
+                </ScrollView>
+
 
 
                 {/**put textinput and button in a row*/}
                 <View style={styles.inputBarContainer}>
                     <TextInput
                         style={styles.inputBarBottom}
-                        onChangeText={(msg) => this.setState({msg})}
+                        onChangeText={(text) => this.setState({text})}
                         //onSubmitEditing={(event) => this.postWebService(event.nativeEvent.text)}
-                        value={this.state.msg}
+                        value={this.state.text}
                     />
                     <Button
                         style={styles.buttonBottom}
-                        onPress={this.sendMSG.bind(this)}
-                        title="Send"/>
+                        onPress={this.postWebService.bind(this)}
+                        title="speak"/>
                 </View>
             </View>
         );

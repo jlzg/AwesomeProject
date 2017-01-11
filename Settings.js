@@ -21,8 +21,10 @@ import {
     TouchableOpacity,
     Navigator,
     TouchableHighlight,
-    ToolbarAndroid
+    ToolbarAndroid,
+    AsyncStorage
 } from 'react-native';
+import LocalToastAndroid from './LocalToastAndroid';
 
 const styles = StyleSheet.create({
     containerToolbar: {
@@ -37,6 +39,40 @@ const styles = StyleSheet.create({
         backgroundColor: '#e9eaed',
         height: 56,
     },
+    inputBarContainer: {
+        fontSize: 20,
+        borderColor: 'gray',
+        position: 'absolute',
+        left:     0,
+        paddingLeft: 10,
+        //paddingLeft: 10,
+        right: 0,
+        bottom: 0,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+
+    },
+    inputBarBottom: {
+        fontSize: 20,
+        //height: 40,
+        //width: 400,
+        padding: 10,
+        textAlign: 'left',
+        flex:1,
+
+    },
+    buttonBottom: {
+        fontSize: 20,
+        borderColor: 'gray',
+        //position: 'absolute',
+        //left:     0,
+        //right: 0,
+        //bottom: 0,
+        //flexDirection: 'row',
+
+    },
+
 
 });
 
@@ -52,9 +88,24 @@ export default class SettingsScene extends Component{
             isLoading: true,
             language: ["Java", "js"],
             favoriteNumber: '6512345678',
+            favnumber: ``,
             text: ``//on type, change the state of text here,
 
         };
+    }
+
+    componentDidMount() {
+
+        AsyncStorage.getItem("favnumber").then((value) => {
+            if(value != null){
+                this.setState({"favnumber": value});
+            }
+            else{
+                this.setState({"favnumber": "Save the favorite number here"});
+            }
+
+        }).done();
+
     }
 
 
@@ -62,20 +113,10 @@ export default class SettingsScene extends Component{
 
         //console.log("has the time out been activated ?");
         //console.log("has the time out been activated ?");
+        AsyncStorage.setItem("favnumber", this.state.favnumber,
+            () => LocalToastAndroid.show('Number saved successfully', LocalToastAndroid.SHORT));
+        //this.setState({"favnumber": this.state.favnumber});
 
-        return fetch('https://facebook.github.io/react-native/movies.json')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log("check response: " + responseJson.movies);
-                this.setState({response: responseJson.movies});
-                this.setState({isLoading: false});
-                this.setState({dataSource: this.state.dataSource.cloneWithRows(responseJson.movies)});
-                return responseJson.movies;
-                //this is background thread, keep polling for new request
-            })
-            .catch((error) => {
-                console.error(error);
-            });
     }
 
     navBack(){
@@ -91,27 +132,44 @@ export default class SettingsScene extends Component{
 
         return (
 
-            <View>
+            <View style={{flexDirection: 'column', flex: 1}}>
                     <ToolbarAndroid
                         style={styles.toolbar}
-                        title="Back"
-                        actions={[{title: 'Settings', icon: require('./go-back.png'), show: 'always'}]}
+                        title="Save the favorite number below"
+                        actions={[{title: 'Settings', icon: require('./back.png'), show: 'always'}]}
                         onActionSelected={this.props.navigator.pop}
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#000000'}
                     />
 
-                        <Text>Save the favorite number here</Text>
-                <TextInput
-                    style={styles.inputBarBottom}
-                    onChangeText={(text) => this.setState({text})}
-                    //onSubmitEditing={(event) => this.postWebService(event.nativeEvent.text)}
-                    value={this.state.text}
-                />
-                <Button
-                    style={styles.buttonBottom}
-                    onPress={this.saveFavnumber.bind(this)}
-                    title="Save"/>
+
+
+                {/**put textinput and button in a row
+                <View style={styles.inputBarContainer}>
+                    <TextInput
+                        style={styles.inputBarBottom}
+                        onChangeText={(text) => this.setState({text})}
+                        //onSubmitEditing={(event) => this.postWebService(event.nativeEvent.text)}
+                        value={this.state.text}
+                    />
+                    <Button
+                        style={styles.buttonBottom}
+                        onPress={this.postWebService.bind(this)}
+                        title="speak"/>
+                </View>
+                 */}
+                <View style={styles.inputBarContainer}>
+                    <TextInput
+                        style={styles.inputBarBottom}
+                        onChangeText={(favnumber) => this.setState({favnumber})}
+                        //onSubmitEditing={(event) => this.postWebService(event.nativeEvent.text)}
+                        value={this.state.favnumber}
+                    />
+                    <Button
+                        style={styles.buttonBottom}
+                        onPress={this.saveFavnumber.bind(this)}
+                        title="Save"/>
+                </View>
             </View>
 
         );
