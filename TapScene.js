@@ -173,7 +173,7 @@ var styles = StyleSheet.create({
     toolbar: {
         backgroundColor: '#e9eaed',
         height: 56,
-        flex: 0.5
+        //flex: 0.5
     },
     // button: {
     //     flex: 0.5,
@@ -204,7 +204,7 @@ export default class TapScene extends Component{
             language: ["Java", "js"],
             favoriteNumber: '6512345678',
             favnumber: ``,
-            msg:`Leave a msg`,
+            msg:`Leave a message`,
             text: ``//on type, change the state of text here,
 
         };

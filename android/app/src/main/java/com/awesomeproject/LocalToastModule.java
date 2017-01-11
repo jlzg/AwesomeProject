@@ -39,7 +39,7 @@ public class LocalToastModule extends ReactContextBaseJavaModule {
     //the annotation is for exposing the method to js
     @ReactMethod
     public void show(String message, int duration) {
-        Toast.makeText(getReactApplicationContext(), message+" from java", duration).show();
+        Toast.makeText(getReactApplicationContext(), message+"", duration).show();
     }
 
 

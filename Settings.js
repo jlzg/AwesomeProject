@@ -136,7 +136,7 @@ export default class SettingsScene extends Component{
                     <ToolbarAndroid
                         style={styles.toolbar}
                         title="Save the favorite number below"
-                        actions={[{title: 'Settings', icon: require('./back.png'), show: 'always'}]}
+                        actions={[{title: 'Settings', icon: require('./backIcon.jpg'), show: 'always'}]}
                         onActionSelected={this.props.navigator.pop}
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#000000'}
