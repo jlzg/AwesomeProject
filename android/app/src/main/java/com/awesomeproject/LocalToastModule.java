@@ -55,7 +55,7 @@ public class LocalToastModule extends ReactContextBaseJavaModule {
         try {
             activity.startActivity(intent);
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(getReactApplicationContext(), "Could not find an activity to place the call.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getReactApplicationContext(), "Could not find an activity to place the call: "+ uri, Toast.LENGTH_SHORT).show();
         }
     }
 }

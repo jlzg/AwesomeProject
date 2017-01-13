@@ -25,6 +25,7 @@ import {
     AsyncStorage
 } from 'react-native';
 import LocalToastAndroid from './LocalToastAndroid';
+import _ from 'lodash';
 
 const styles = StyleSheet.create({
     containerToolbar: {
@@ -101,7 +102,7 @@ export default class SettingsScene extends Component{
                 this.setState({"favnumber": value});
             }
             else{
-                this.setState({"favnumber": "Save the favorite number here"});
+                this.setState({"favnumber": "+1-541-754-3010"});
             }
 
         }).done();
@@ -121,6 +122,11 @@ export default class SettingsScene extends Component{
 
     navBack(){
         this.props.navigator.pop();
+        // this.props.navigator.push({
+        //     title: 'Tap Scene',
+        //     id: 'default',
+        //     passProps: {favnumber: this.state.favnumber}
+        // })
     }
 
     render() {
@@ -137,12 +143,12 @@ export default class SettingsScene extends Component{
                         style={styles.toolbar}
                         title="Save the favorite number below"
                         actions={[{title: 'Settings', icon: require('./backIcon.jpg'), show: 'always'}]}
-                        onActionSelected={this.props.navigator.pop}
-                        onIconClicked={this.props.navigator.pop}
+                        //onActionSelected={this.props.navigator.pop}
+                        onActionSelected={this.navBack.bind(this)}
+                        //onIconClicked={this.props.navigator.pop}
+                        onIconClicked={this.navBack.bind(this)}
                         titleColor={'#000000'}
                     />
-
-
 
                 {/**put textinput and button in a row
                 <View style={styles.inputBarContainer}>

@@ -24,12 +24,13 @@ import {
     TouchableHighlight,
     ToolbarAndroid,
     AsyncStorage,
-    Image
+    Image,
+
 
 } from 'react-native';
 import _ from 'lodash';
 import LocalToastAndroid from './LocalToastAndroid';
-
+//import  nativeImageSource from 'nativeImageSource';
 
 
 
@@ -218,6 +219,16 @@ export default class TapScene extends Component{
 
     }
 
+    shouldComponentUpdate() {
+
+        AsyncStorage.getItem("favnumber").then((value) => {
+            this.setState({"favnumber": value});
+        }).done();
+
+        return true;
+
+    }
+
     loadWebService(){
 
         //console.log("has the time out been activated ?");
@@ -247,7 +258,11 @@ export default class TapScene extends Component{
         //     }
         // });
         //LocalToastAndroid.call('+6512345678 ');
-        LocalToastAndroid.call(this.state.favnumber);
+
+        if(!this.state.favnumber)
+            LocalToastAndroid.show('Please set up your favorite number first', LocalToastAndroid.SHORT);
+        else
+            LocalToastAndroid.call(this.state.favnumber);
     };
 
     sendMSG(url) {

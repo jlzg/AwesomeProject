@@ -39,7 +39,7 @@ class Room extends Component{
         //_navigator = navigator;
         switch (route.id) {
             case 'default':
-                return (<TapScene title={route.title} navigator={navigator} />);
+                return (<TapScene title={route.title} navigator={navigator} {...route.passProps} />);
             case 'settings':
                 return (<SettingsScene title={route.title}  navigator={navigator} />);
         }
