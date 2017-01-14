@@ -1,4 +1,4 @@
-package com.awesomeproject;
+package com.best2lwjj;
 
 import android.app.Application;
 import android.util.Log;

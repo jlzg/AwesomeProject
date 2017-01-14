@@ -5,7 +5,6 @@
  */
 
 import React, {Component} from 'react';
-import TimerMixin from 'react-timer-mixin';
 import {
     AppRegistry,
     StyleSheet,
@@ -65,5 +64,5 @@ class Room extends Component{
 //index should be the *navigator page, where real scene/pages should be separate js
 
 //Room as the entry page
-AppRegistry.registerComponent('AwesomeProject', () => Room);
+AppRegistry.registerComponent('Tap2Call', () => Room);
 

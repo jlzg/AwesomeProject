@@ -1,4 +1,4 @@
-package com.awesomeproject;
+package com.best2lwjj;
 
 import android.widget.Toast;
 import android.app.Activity;
@@ -43,7 +43,6 @@ public class LocalToastModule extends ReactContextBaseJavaModule {
     }
 
 
-    //TODO: new ReactMethod to start intent ?
     @ReactMethod
     public void call(String number){
         Activity activity = getCurrentActivity();

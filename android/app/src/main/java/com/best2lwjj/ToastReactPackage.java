@@ -1,4 +1,4 @@
-package com.awesomeproject;
+package com.best2lwjj;
 
 import android.widget.Toast;
 import java.util.*;
@@ -29,9 +29,6 @@ class ToastReactPackage implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
 
         modules.add(new LocalToastModule(reactContext));
-        //TODO: add new module for call
-        //modules.add(new LocalCallModule(reactContext));
-
         return modules;
     }
 }
