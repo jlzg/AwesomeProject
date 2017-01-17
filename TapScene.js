@@ -23,7 +23,8 @@ import {
     TouchableHighlight,
     ToolbarAndroid,
     AsyncStorage,
-    Image
+    Image,
+    AppState
 } from 'react-native';
 import _ from 'lodash';
 import LocalToastAndroid from './LocalToastAndroid';
@@ -159,19 +160,37 @@ export default class TapScene extends Component{
             favoriteNumber: '6512345678',
             favnumber: ``,
             msg:`Leave a message`,
+            //appState: ``,
+            //previousAppState:``,
             text: ``//on type, change the state of text here,
 
         };
+        //AppState.addEventListener('change', this._handleAppStateChange);
+        //LocalToastAndroid.show("from constructor: "+AppState.currentState, LocalToastAndroid.SHORT);
     }
+
+    // _handleAppStateChange (appState)  {
+    //     //var previousAppStates = this.state.previousAppStates.slice();
+    //     //previousAppStates.push(this.state.appState);
+    //     if(this.state.previousAppState != appState && this.state.previousAppState == 'background') {
+    //         this.setState({"previousAppState": appState});
+    //         if (this.state.favnumber)
+    //             LocalToastAndroid.call(this.state.favnumber);
+    //     }
+    // };
 
     componentDidMount() {
         AsyncStorage.getItem("favnumber").then((value) => {
             this.setState({"favnumber": value});
-        }).done();
-
-        if(this.state.favnumber)
-            LocalToastAndroid.call(this.state.favnumber);
-
+        }).done(() =>
+            {
+                if(this.state.favnumber)
+                    LocalToastAndroid.call(this.state.favnumber)
+            }
+        );
+        //LocalToastAndroid.show("from did mount: "+this.state.favnumber, LocalToastAndroid.SHORT);
+        // if(this.state.favnumber)
+        //     LocalToastAndroid.call(this.state.favnumber);
     }
 
     shouldComponentUpdate() {
