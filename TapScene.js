@@ -165,6 +165,17 @@ export default class TapScene extends Component{
             text: ``//on type, change the state of text here,
 
         };
+
+        AsyncStorage.getItem("favnumber").then((value) => {
+            this.setState({"favnumber": value});
+        }).done(
+            () =>
+            {
+                if(this.state.favnumber)
+                    LocalToastAndroid.call(this.state.favnumber)
+            }
+        );
+
         //AppState.addEventListener('change', this._handleAppStateChange);
         //LocalToastAndroid.show("from constructor: "+AppState.currentState, LocalToastAndroid.SHORT);
     }
@@ -182,11 +193,12 @@ export default class TapScene extends Component{
     componentDidMount() {
         AsyncStorage.getItem("favnumber").then((value) => {
             this.setState({"favnumber": value});
-        }).done(() =>
-            {
-                if(this.state.favnumber)
-                    LocalToastAndroid.call(this.state.favnumber)
-            }
+        }).done(
+            // () =>
+            // {
+            //     if(this.state.favnumber)
+            //         LocalToastAndroid.call(this.state.favnumber)
+            // }
         );
         //LocalToastAndroid.show("from did mount: "+this.state.favnumber, LocalToastAndroid.SHORT);
         // if(this.state.favnumber)
